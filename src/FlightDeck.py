@@ -25,7 +25,7 @@ and trigger the CSV export.
 On first run, if the specified betdata database path is not known, the script will prompt
 the user to enter its full path and will save that in a local `config.json` for future runs.
 
-Usage example (loads all “.pt” under models/ by default):
+Usage example (loads Prometheus_6.pt and Prometheus_7.pt under models/ by default):
     python FlightDeck.py
 
 Usage example (explicitly specifying one or more .pt files):
@@ -714,18 +714,25 @@ def main():
         help='Zero-based index of the column to extract (6th column for Brad, default: 5).'
     )
 
-    # 2) Auto-discover .pt files (adjusted to look in project root /models)
+    # 2) Auto-discover only Prometheus_6.pt and Prometheus_7.pt
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     models_dir = os.path.join(project_root, "models")
-    default_pt_list = glob.glob(os.path.join(models_dir, "*.pt"))
+    default_pt_list = []
+    for name in ["Prometheus_6.pt", "Prometheus_7.pt"]:
+        path = os.path.join(models_dir, name)
+        if os.path.isfile(path):
+            default_pt_list.append(path)
+        else:
+            logger.warning(f"Default model '{name}' not found in '{models_dir}'.")
+
     if not default_pt_list:
-        logger.warning(f"No '*.pt' files found under '{models_dir}'. You can still pass --pt_files manually.")
+        logger.warning(f"No 'Prometheus_6.pt' or 'Prometheus_7.pt' found under '{models_dir}'. You can still pass --pt_files manually.")
     parser.add_argument(
         '--pt_files', type=str, nargs="*",
         default=default_pt_list,
         help=(
             "Paths to .pt model file(s). "
-            f"If omitted, all '*.pt' under '{models_dir}' will be loaded."
+            f"If omitted, Prometheus_6.pt and Prometheus_7.pt under '{models_dir}' will be loaded (if present)."
         )
     )
 
