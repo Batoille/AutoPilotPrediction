@@ -1,7 +1,7 @@
 
 # AutoPilotPrediction (FlightDeck)
 
-> FlightDeck continuously polls a SQLite “betdata” table, feeds the last N “Brad” values into one or more PyTorch LSTM models, and writes each prediction to a separate SQLite database. On shutdown, it exports all predictions—including “WON/LOST” flags and bank changes—to a timestamped CSV.
+> FlightDeck is a predictive AI console designed to work with AutoPilotScraper (https://github.com/Batoille/AutoPilotScraper). It continuously polls a SQLite “betdata” table, feeds the last N “Brad” values into one or more PyTorch LSTM models, and writes each prediction to a separate SQLite database. On shutdown, it exports all predictions—including “WON/LOST” flags and bank changes—to a timestamped CSV.
 
 ---
 
@@ -101,6 +101,7 @@ To add other models, place their `.pt` in `models/` and specify via `--pt_files`
 
 - **Python 3.10+** installed.  
 - **Git** (for cloning).  
+- **AutoPilotScraper**: FlightDeck is designed to work in tandem with [AutoPilotScraper](https://github.com/YourUsername/AutoPilotScraper). Make sure you have AutoPilotScraper installed and configured before using FlightDeck.
 - *(Optional)* [SQLite CLI](https://www.sqlite.org/download.html) to create or inspect databases from the command line.
 
 ### Clone & Install
@@ -287,8 +288,6 @@ You now have `~/Desktop/sample_betdata.db` ready for testing.
     ```
     --extra-index-url https://download.pytorch.org/whl/cpu
     torch==2.6.0+cpu
-    torchvision==0.16.0+cpu
-    torchaudio==2.6.0+cpu
     ```
 - **Permission denied** on Windows when activating venv:  
   ```powershell
